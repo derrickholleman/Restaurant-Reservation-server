@@ -157,7 +157,7 @@ function hasValidPhoneNumber(req, res, next) {
   ) {
     return next({
       status: 400,
-      message: "Mobile Number must be a valid telephone number",
+      message: "Mobile Number must be a valid telephone number separated by hyphens or periods",
     });
   }
 
