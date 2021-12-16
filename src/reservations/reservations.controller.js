@@ -81,7 +81,7 @@ function hasValidDate(req, res, next) {
   } = req.body;
   const invalidDate = 2;
   const submitDate = new Date(reservation_date + " " + reservation_time);
-  const dayAsNum = submitDate.getDay();
+  const dayAsNum = submitDate.getUTCDay();
   const today = new Date();
 
   const dateFormat = /\d\d\d\d-\d\d-\d\d/;
