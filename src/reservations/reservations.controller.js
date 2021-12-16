@@ -106,7 +106,7 @@ function hasValidDate(req, res, next) {
 
   // if editing, don't do final check for past date
   if (res.locals.reservation) {
-    return next()
+    return next();
   }
   if (submitDate < today) {
     next({
@@ -149,6 +149,24 @@ function hasValidTime(req, res, next) {
       });
     }
   }
+  next();
+}
+
+function hasValidPhoneNumber(req, res, next) {
+  const {
+    data: { mobile_number },
+  } = req.body;
+
+  if (
+    /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$/.test(mobile_number) ===
+    false
+  ) {
+    return next({
+      status: 400,
+      message: "Mobile Number must be a valid telephone number",
+    });
+  }
+
   next();
 }
 
@@ -261,6 +279,7 @@ module.exports = {
     checkBooked,
     hasValidTime,
     hasValidDate,
+    hasValidPhoneNumber,
     hasValidPeople,
     asyncErrorBoundary(create),
   ],
@@ -270,6 +289,7 @@ module.exports = {
     checkBooked,
     hasValidTime,
     hasValidDate,
+    hasValidPhoneNumber,
     hasValidPeople,
     asyncErrorBoundary(update),
   ],
