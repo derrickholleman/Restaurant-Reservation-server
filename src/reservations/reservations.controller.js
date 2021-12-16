@@ -152,12 +152,13 @@ function hasValidPhoneNumber(req, res, next) {
   } = req.body;
 
   if (
-    /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$/.test(mobile_number) ===
-    false
+    /[a-zA-Z]/.test(
+      mobile_number
+    ) === true
   ) {
     return next({
       status: 400,
-      message: "Mobile Number must be a valid telephone number with hyphens or spaces",
+      message: "Mobile Number must only include numbers",
     });
   }
 
