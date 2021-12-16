@@ -152,7 +152,7 @@ function hasValidPhoneNumber(req, res, next) {
   } = req.body;
 
   if (
-    /[a-zA-Z]/.test(
+    /[a-zA-Z.,]/.test(
       mobile_number
     ) === true
   ) {
