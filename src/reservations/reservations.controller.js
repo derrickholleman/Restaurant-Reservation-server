@@ -1,6 +1,7 @@
 const reservationsService = require("./reservations.service");
 const hasProperties = require("../errors/hasProperties");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
+const { first } = require("../db/connection");
 
 // LIST
 async function list(req, res) {
@@ -73,6 +74,21 @@ async function reservationExists(req, res, next) {
       message: `No reservation found for id '${reservationId}'.`,
     });
   }
+}
+
+function hasValidName(req, res, next) {
+  const {
+    data: { first_name, last_name },
+  } = req.body;
+
+  if (/^[0-9]+$/.test(first_name) || /^[0-9]+$/.test(last_name)) {
+    return next({
+      status: 400,
+      message: "Name must include only letters A-Z.",
+    });
+  }
+
+  return next();
 }
 
 function hasValidDate(req, res, next) {
@@ -151,11 +167,7 @@ function hasValidPhoneNumber(req, res, next) {
     data: { mobile_number },
   } = req.body;
 
-  if (
-    /[a-zA-Z.,]/.test(
-      mobile_number
-    ) === true
-  ) {
+  if (/[a-zA-Z.,]/.test(mobile_number) === true) {
     return next({
       status: 400,
       message: "Mobile Number must only include numbers",
@@ -272,6 +284,7 @@ module.exports = {
     hasOnlyValidProperties,
     hasRequiredProperties,
     checkBooked,
+    hasValidName,
     hasValidTime,
     hasValidDate,
     hasValidPhoneNumber,
@@ -282,6 +295,7 @@ module.exports = {
     asyncErrorBoundary(reservationExists),
     hasRequiredProperties,
     checkBooked,
+    hasValidName,
     hasValidTime,
     hasValidDate,
     hasValidPhoneNumber,
